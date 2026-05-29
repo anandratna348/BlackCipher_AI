@@ -1,0 +1,92 @@
+# Python
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+
+venv/
+.venv/
+env/
+
+# Jupyter
+
+.ipynb_checkpoints/
+
+# Environment Variables
+
+.env
+.env.*
+
+# VS Code
+
+.vscode/
+
+# PyCharm
+
+.idea/
+
+# Logs
+
+*.log
+
+# Model Artifacts
+
+models/*.pkl
+models/*.joblib
+models/*.bin
+
+# Vector Database
+
+vector_store/
+
+# FAISS
+
+*.faiss
+
+# Testing Artifacts
+
+.pytest_cache/
+.coverage
+
+# OS Files
+
+.DS_Store
+Thumbs.db
+
+# Build
+
+build/
+dist/
+*.egg-info/
+
+# MLflow
+
+mlruns/
+
+# Temporary Files
+
+tmp/
+temp/
+cache/
+
+# Ollama Cache (optional)
+
+ollama_cache/
+
+# Generated Reports
+
+reports/*.json
+reports/*.csv
+
+# Kaggle Downloads
+
+data/raw/
+data/interim/
+
+# Large Files
+
+*.zip
+*.tar
+*.gz
