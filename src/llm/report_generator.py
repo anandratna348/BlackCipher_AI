@@ -9,11 +9,7 @@ def generate_report(
     return {
         "timestamp": datetime.utcnow().isoformat(),
 
-        "prediction": {
-            "attack_type": prediction["attack_type"],
-            "confidence": prediction["confidence"],
-            "model": prediction["model"]
-        },
+        "prediction": prediction,
 
         "analysis": analysis
     }

@@ -10,7 +10,7 @@ class ThreatPredictor:
             "models/xgb_base_model.pkl"
         )
 
-        self.encoder = joblib.load(
+        self.target_encoder = joblib.load(
             "models/target_encoder.pkl"
         )
 
@@ -18,16 +18,38 @@ class ThreatPredictor:
             "models/feature_columns.pkl"
         )
 
+        self.encoders = joblib.load(
+            "models/feature_encoders.pkl"
+        )
+
     def predict(self, data: dict):
 
         df = pd.DataFrame([data])
 
-        # Auto-fill missing features
+        # Fill missing features
         for feature in self.features:
+
             if feature not in df.columns:
+
                 df[feature] = 0
 
-        # Ensure training feature order
+        # Apply categorical encoders
+        for col, encoder in self.encoders.items():
+
+            if col in df.columns:
+
+                try:
+
+                    df[col] = encoder.transform(
+                        df[col].astype(str)
+                    )
+
+                except ValueError:
+
+                    # Unknown category
+                    df[col] = 0
+
+        # Ensure feature order
         df = df[self.features]
 
         prediction = self.model.predict(df)
@@ -38,7 +60,7 @@ class ThreatPredictor:
             probabilities.max()
         )
 
-        attack_type = self.encoder.inverse_transform(
+        attack_type = self.target_encoder.inverse_transform(
             prediction
         )[0]
 

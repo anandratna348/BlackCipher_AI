@@ -9,7 +9,7 @@ class ThreatAnalyzer:
 
         self.llm = ChatOllama(
             model="tinyllama",
-            temperature=0.2
+            temperature=0.1
         )
 
     def analyze(
@@ -18,6 +18,26 @@ class ThreatAnalyzer:
         confidence: float
     ):
 
+        # Handle benign traffic without LLM
+        if attack_type.lower() == "normal":
+
+            return """
+Executive Summary:
+Traffic appears benign and no malicious activity was detected.
+
+Risk Level:
+Low
+
+MITRE ATT&CK Mapping:
+None
+
+Recommended Actions:
+- Continue routine monitoring
+- Maintain current security controls
+- Review logs periodically
+- No immediate remediation required
+"""
+
         context = retrieve_context(
             attack_type
         )
@@ -25,21 +45,37 @@ class ThreatAnalyzer:
         prompt = f"""
 You are a senior SOC analyst.
 
+Analyze ONLY the attack type provided.
+
 Attack Type:
 {attack_type}
 
-Confidence:
-{confidence}
+Model Confidence:
+{confidence:.4f}
 
-Threat Intelligence:
+Threat Intelligence Context:
 {context}
 
-Generate:
+Rules:
+- Use only the supplied attack type.
+- Do not discuss unrelated attacks.
+- Do not invent indicators or techniques.
+- Keep response concise and professional.
+- Maximum 200 words.
 
-1. Executive Summary
-2. Risk Level
-3. MITRE ATT&CK Mapping
-4. Recommended Actions
+Generate exactly these sections:
+
+Executive Summary:
+(2-3 sentences)
+
+Risk Level:
+(Low/Medium/High/Critical)
+
+MITRE ATT&CK Mapping:
+(Technique name if available)
+
+Recommended Actions:
+(3-5 bullet points)
 """
 
         response = self.llm.invoke(

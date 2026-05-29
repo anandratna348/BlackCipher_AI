@@ -1,8 +1,9 @@
 from fastapi import FastAPI
-
 from src.inference.predictor import ThreatPredictor
 from src.llm.analyzer import ThreatAnalyzer
 from src.llm.report_generator import generate_report
+from src.explainability.shap_explainer import ThreatExplainer
+from src.intelligence.mitre_mapper import get_mitre_mapping
 
 app = FastAPI(
     title="BlackCipher AI",
@@ -11,11 +12,11 @@ app = FastAPI(
 
 predictor = ThreatPredictor()
 analyzer = ThreatAnalyzer()
+explainer = ThreatExplainer()
 
 
 @app.get("/")
 def root():
-
     return {
         "message": "BlackCipher AI Running"
     }
@@ -23,7 +24,6 @@ def root():
 
 @app.get("/health")
 def health():
-
     return {
         "status": "healthy"
     }
@@ -32,8 +32,12 @@ def health():
 @app.post("/analyze")
 def analyze(payload: dict):
 
-    prediction = predictor.predict(
-        payload
+    prediction = predictor.predict(payload)
+
+    explanation = explainer.explain(payload)
+
+    mitre = get_mitre_mapping(
+        prediction["attack_type"]
     )
 
     analysis = analyzer.analyze(
@@ -45,5 +49,9 @@ def analyze(payload: dict):
         prediction,
         analysis
     )
+
+    report["mitre"] = mitre
+
+    report["top_features"] = explanation
 
     return report
