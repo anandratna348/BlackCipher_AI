@@ -2,16 +2,18 @@ from datetime import datetime
 
 
 def generate_report(
-    attack_type,
-    confidence,
-    analysis
+    prediction: dict,
+    analysis: str
 ):
 
     return {
-        "timestamp": str(
-            datetime.utcnow()
-        ),
-        "attack_type": attack_type,
-        "confidence": confidence,
+        "timestamp": datetime.utcnow().isoformat(),
+
+        "prediction": {
+            "attack_type": prediction["attack_type"],
+            "confidence": prediction["confidence"],
+            "model": prediction["model"]
+        },
+
         "analysis": analysis
     }

@@ -1,4 +1,3 @@
-
 import joblib
 import pandas as pd
 
@@ -23,7 +22,12 @@ class ThreatPredictor:
 
         df = pd.DataFrame([data])
 
-        # Ensure correct feature order
+        # Auto-fill missing features
+        for feature in self.features:
+            if feature not in df.columns:
+                df[feature] = 0
+
+        # Ensure training feature order
         df = df[self.features]
 
         prediction = self.model.predict(df)
