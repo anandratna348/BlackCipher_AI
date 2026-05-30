@@ -182,7 +182,7 @@ BlackCipher_AI/
 ### Clone Repository
 
 ```bash
-git clone https://github.com/your-username/BlackCipher_AI.git
+git clone https://github.com/anandratna348/BlackCipher_AI.git
 
 cd BlackCipher_AI
 ```
@@ -301,9 +301,32 @@ http://127.0.0.1:8000/docs
 
 ## Dataset
 
-UNSW-NB15 Dataset
+This project uses the **UNSW-NB15 Network Intrusion Dataset**.
 
-The dataset contains modern network traffic and attack scenarios used for intrusion detection research.
+Download the dataset from the official source and place the files inside a `dataset/UNSW_NB15/` directory.
+
+```text
+dataset/
+└── UNSW_NB15/
+    ├── NUSW-NB15_features.csv
+    ├── UNSW-NB15_1.csv
+    ├── UNSW-NB15_2.csv
+    ├── UNSW-NB15_3.csv
+    ├── UNSW-NB15_4.csv
+    ├── UNSW-NB15_LIST_EVENTS.csv
+    ├── UNSW_NB15_training-set.csv
+    └── UNSW_NB15_testing-set.csv
+```
+
+### Dataset Source
+
+Official UNSW Canberra Cyber Research Dataset:
+
+https://research.unsw.edu.au/projects/unsw-nb15-dataset
+
+### Dataset Description
+
+The UNSW-NB15 dataset contains modern network traffic and attack scenarios generated using the IXIA PerfectStorm tool.
 
 Attack Categories:
 
@@ -316,7 +339,10 @@ Attack Categories:
 * Reconnaissance
 * Shellcode
 * Worms
-* Normal
+* Normal Traffic
+
+The dataset is used to train and evaluate the XGBoost-based intrusion detection models deployed in BlackCipher AI.
+
 
 ---
 
